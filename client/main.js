@@ -3,14 +3,17 @@ var raycaster = new THREE.Raycaster();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.set(0, 0, 5);
 
+var texture = new THREE.TextureLoader().load( 'king_of_hearts2.png' );
+
+var modifier = new THREE.BendModifier();
 
 var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.video').appendChild(renderer.domElement);
 
 var createCard = function() {
-  var geometry = new THREE.PlaneGeometry(1, 2);
-  var material = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.DoubleSide});
+  var geometry = new THREE.PlaneGeometry(1, 2, 10, 10);
+  var material = new THREE.MeshBasicMaterial({side: THREE.DoubleSide, map: texture});
   var mesh = new THREE.Mesh(geometry, material);
   mesh.rotation.set(2, 0, 0);
   scene.add(mesh);
