@@ -9,7 +9,6 @@
  * @author Vildanov Almaz / alvild@gmail.com
  * The algorithm of a bend is based on the chain line cosh: y = 1/b * cosh(b*x) - 1/b. It can be used only in three.js.
  */
-import THREE from 'three';
 
 THREE.BendModifier = function () {
 
