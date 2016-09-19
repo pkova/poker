@@ -21,7 +21,5 @@
     "url": "https://github.com/pkova/poker/issues"
   },
   "homepage": "https://github.com/pkova/poker#readme",
-  "dependencies": {
-    "node-poker": "0.0.2"
-  }
+  "dependencies": {}
 }
