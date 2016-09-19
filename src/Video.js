@@ -2,30 +2,54 @@ import React, { Component } from 'react';
 import React3 from 'react-three-renderer';
 import THREE from 'three';
 import TWEEN from 'tween.js';
+import BendBodifier from './BendModifier';
 
 class Video extends React.Component {
   constructor(props, context) {
     super(props, context);
 
+    // construct the position vector here, because if we use 'new' within render,
+    // React will think that things have changed when they have not.
+    this.cameraPosition = new THREE.Vector3(0, 0, 5);
+    this.raycaster = new THREE.Raycaster();
+
+    this.cameraDirection = new THREE.Vector3(0, 0, -1);
+
+    this.state = {
+      card1Position: new THREE.Vector3(0, 0, 0),
+      card2Position: new THREE.Vector3(0, 0, 0),
+      cardRotation: new THREE.Euler(2, 0, 0),
+      peek: false
+    };
+
+    this.modifier = new THREE.BendModifier();
+    console.log(this.modifier);
+
+  }
+
+  componentDidMount() {
+    document.querySelector('canvas').addEventListener('click', this.clickHandler.bind(this));
+    this.deal();
+  }
+
+  clickHandler(event) {
+    event.preventDefault();
+    var mouse = {};
+    this.setState({peek: !this.state.peek});
+  }
+
+  deal = () => {
     var coords = { x: 1, y: 2 };
     var tween = new TWEEN.Tween(coords)
-                         .to({ x: -1, y: -1 }, 1250)
-                         .onUpdate(function() {
-                           console.log(this.x, this.y);
-                         })
+                         .to({ x: -0.5, y: -1 }, 1100)
                          .start();
 
     var coords2 = { x: 1, y: 2 };
     var tween2 = new TWEEN.Tween(coords2)
-                         .to({ x: 1, y: -1 }, 1000)
-                         .onUpdate(function() {
-                           console.log(this.x, this.y);
-                         })
-                         .start();
-
+                          .to({ x: 0.5, y: -1 }, 1100)
+                          .start();
 
     tween.onUpdate( () => {
-      console.log('hello');
       this.setState({
         card1Position: new THREE.Vector3(coords.x, coords.y, 0),
         card2Position: new THREE.Vector3(coords2.x, coords2.y, 0),
@@ -36,20 +60,6 @@ class Video extends React.Component {
         )
       });
     });
-
-
-
-
-    // construct the position vector here, because if we use 'new' within render,
-    // React will think that things have changed when they have not.
-    this.cameraPosition = new THREE.Vector3(0, 0, 5);
-
-    this.state = {
-      card1Position: new THREE.Vector3(0, 0, 0),
-      card2Position: new THREE.Vector3(0, 0, 0),
-      cardRotation: new THREE.Euler(2, 0, 0)
-    };
-
   }
 
   _onAnimate = () => {
