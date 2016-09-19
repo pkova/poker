@@ -4,19 +4,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Poker</title>
+    <style>
+     .absolute {
+       position: absolute;
+     }
+
+     #video {
+       left: 40%
+     }
+     video {
+       height: 20em;
+       width: 20em;
+     }
+     canvas {
+       z-index: 1;
+     }
+     .controls {
+       position: relative;
+     }
+    </style>
   </head>
   <body>
     <div class="app">
-      <div class="video"></div>
+      <div class="container">
+        <div id="video" class="absolute"></div>
+        <div class="game absolute"></div>
+      </div>
       <div class="controls">
         <button class="bet">Bet</button>
         <button class="call">Call</button>
         <button class="fold">Fold</button>
       </div>
     </div>
+    <script src="https://simplewebrtc.com/latest-v2.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
     <script src="BendModifier.js"></script>
+    <script src="webrtc.js"></script>
     <script src="main.js"></script>
   </body>
 </html>

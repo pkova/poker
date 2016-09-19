@@ -3,13 +3,13 @@ var raycaster = new THREE.Raycaster();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.set(0, 0, 5);
 
-var texture = new THREE.TextureLoader().load( 'king_of_hearts2.png' );
+var texture = new THREE.TextureLoader().load( 'cards/king_of_hearts2.png' );
 
 var modifier = new THREE.BendModifier();
 
 var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.querySelector('.video').appendChild(renderer.domElement);
+document.querySelector('.game').appendChild(renderer.domElement);
 
 var createCard = function() {
   var geometry = new THREE.PlaneGeometry(1, 2, 10, 10);
@@ -26,12 +26,12 @@ var card2 = createCard();
 var dealStartingCards = function() {
   var coords = { x: 1, y: 2 };
   var tween = new TWEEN.Tween(coords)
-      .to({ x: -0.5, y: -1 }, 1100)
+      .to({ x: -0.5, y: -3 }, 1100)
       .start();
 
   var coords2 = { x: 1, y: 2 };
   var tween2 = new TWEEN.Tween(coords2)
-    .to({ x: 0.5, y: -1 }, 1100)
+    .to({ x: 0.5, y: -3 }, 1100)
     .start();
 
   tween.onUpdate( function() {
