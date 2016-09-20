@@ -6,6 +6,8 @@ var R = require('ramda');
 
 var table = new poker.Table(50, 100, 2, 2, 100, 1000);
 
+var emitter = table.getEventEmitter();
+
 var players = [];
 
 io.on('connection', function(socket){
@@ -53,13 +55,32 @@ io.on('connection', function(socket){
         table.players[table.currentPlayer].Bet();
       } else if (action === 'Call') {
         table.players[table.currentPlayer].Call();
+
+        var getClientState = R.compose(R.assoc('currentPlayer', table.currentPlayer),
+                                       R.assoc('players',
+                                               R.map(
+                                                 R.pickAll(['playerName', 'chips']),
+                                                 table.players)),
+                                       R.dissoc('deck'),
+                                       R.clone);
+
+        var gameState = getClientState(table.game);
+
+        console.log('emitting newHand CALL');
+        io.emit('newHand', gameState);
+
       } else if (action === 'Fold') {
         table.players[table.currentPlayer].Fold();
       }
     }
+  });
+
+  emitter.on('deal', function() {
+    io.emit('deal', table.game.board);
   });
 });
 
 http.listen(3001, function(){
   console.log('listening on *:3001');
 });
+

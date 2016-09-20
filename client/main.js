@@ -19,7 +19,18 @@ socket.on('playerIndex', function(index) {
 });
 
 socket.on('cards', function(cards) {
+  clearScene();
   dealStartingCards(cards[0], cards[1]);
+});
+
+socket.on('deal', function(board) {
+  if (board.length === 3) {
+    dealFlop(board);
+  } else if (board.length === 4) {
+    dealTurn(R.last(board));
+  } else if (board.length === 5) {
+    dealRiver(R.last(board));
+  }
 });
 
 var scene = new THREE.Scene();
