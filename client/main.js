@@ -59,9 +59,9 @@ var dealRiver = function(card) {
 };
 
 var clearScene = function() {
-  scene.children.forEach(function(o) {
-    scene.remove(o);
-  });
+  for (var i = scene.children.length - 1; i >= 0; i--) {
+    scene.remove(scene.children[i]);
+  }
 };
 
 dealStartingCards();
