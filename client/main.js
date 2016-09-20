@@ -43,7 +43,31 @@ var dealStartingCards = function() {
   });
 };
 
+var dealFlop = function(cards) {
+  cards.forEach(function(card, idx) {
+    var currentCard = createCard(card);
+    currentCard.position.set(idx - 2, 0, 0);
+  });
+};
+
+var dealTurn = function(card) {
+  createCard(card).position.set(1, 0, 0);
+};
+
+var dealRiver = function(card) {
+  createCard(card).position.set(2, 0, 0);
+};
+
+var clearScene = function() {
+  scene.children.forEach(function(o) {
+    scene.remove(o);
+  });
+};
+
 dealStartingCards();
+dealFlop(['3C', '5C', '2H']);
+dealTurn('AS');
+dealRiver('8H');
 
 function render() {
   TWEEN.update();
