@@ -20,7 +20,9 @@ io.on('connection', function(socket){
       socket: socket
     });
 
-    var playerIndex = players.length - 1;
+    var playerIndex = players.findIndex(function(e) {
+      return e.socket === socket;
+    });
     socket.playerIndex = playerIndex;
 
     socket.emit('playerIndex', playerIndex);
@@ -99,6 +101,16 @@ io.on('connection', function(socket){
         io.emit('newHand', gameState);
       }
     }
+  });
+
+  socket.on('disconnect', function() {
+    console.log('a user has disconnected');
+    console.log(players);
+    players = players.filter(function(e) {
+      return e.socket !== socket;
+    });
+    console.log(players);
+    var table = new poker.Table(50, 100, 2, 2, 100, 1000);
   });
 
   emitter.on('deal', function() {
