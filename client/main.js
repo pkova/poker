@@ -52,7 +52,7 @@ var createCard = function(card) {
   var texture = textures[card];
   var material = new THREE.MeshBasicMaterial({side: THREE.DoubleSide, map: texture});
   var mesh = new THREE.Mesh(geometry, material);
-  mesh.rotation.set(2, 0, 0);
+  mesh.rotation.set(2, Math.PI, 0);
   scene.add(mesh);
   return mesh;
 };
