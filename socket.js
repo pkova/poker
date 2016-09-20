@@ -84,6 +84,19 @@ io.on('connection', function(socket){
 
       } else if (action === 'Fold') {
         table.players[table.currentPlayer].Fold();
+
+        var getClientState = R.compose(R.assoc('currentPlayer', table.currentPlayer),
+                                       R.assoc('players',
+                                               R.map(
+                                                 R.pickAll(['playerName', 'chips']),
+                                                 table.players)),
+                                       R.dissoc('deck'),
+                                       R.clone);
+
+        var gameState = getClientState(table.game);
+
+        console.log('emitting newHand FOLD');
+        io.emit('newHand', gameState);
       }
     }
   });
@@ -99,10 +112,6 @@ io.on('connection', function(socket){
         s.emit('cards', player.cards);
       }
     });
-  });
-
-  emitter.on('gameOver', function() {
-    table.initNewRound();
   });
 });
 

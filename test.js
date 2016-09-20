@@ -6,13 +6,8 @@ table.AddPlayer('pyry',1000);
 table.AddPlayer('billy',1000);
 
 table.StartGame();
+console.log(table.players);
 
-console.log(table.players[table.dealer].playerName);
-console.log(table.players[table.currentPlayer].playerName);
-
-table.players[table.currentPlayer].Call();
-table.players[table.currentPlayer].Call();
-
-console.log(table.players[table.dealer].playerName);
-console.log(table.players[table.currentPlayer].playerName);
-
+table.players[table.currentPlayer].Fold();
+table.initNewRound();
+console.log(table.players);

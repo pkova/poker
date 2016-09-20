@@ -10,6 +10,7 @@ socket.on('newHand', function(state) {
   console.log('received newHand gameState: ', state);
   gameState = state;
   document.querySelector('.pot > span').innerText = state.pot;
+  document.querySelector('.chips > span').innerText = state.players[playerIndex].chips;
   if (gameState.currentPlayer === playerIndex) {
     myTurn = true;
   }
