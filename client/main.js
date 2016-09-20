@@ -11,6 +11,10 @@ socket.on('newHand', function(state) {
   gameState = state;
   document.querySelector('.pot > span').innerText = state.pot;
   document.querySelector('.chips > span').innerText = state.players[playerIndex].chips;
+  document.querySelector('.mybet > span').innerText = state.bets[playerIndex];
+  var hisBet = state.bets.filter(function(e, i) {return i !== playerIndex;})[0];
+  document.querySelector('.hisbet > span').innerText = hisBet;
+
   if (gameState.currentPlayer === playerIndex) {
     myTurn = true;
   }
