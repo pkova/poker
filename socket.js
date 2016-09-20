@@ -36,23 +36,36 @@ io.on('connection', function(socket){
 
       var gameState = getClientState(table.game);
 
-
-      console.log('emitting newHand');
-      io.emit('newHand', gameState);
-
       table.players.forEach(function(player, i) {
         var s = players[i].socket;
         s.emit('cards', player.cards);
       });
+
+      console.log('emitting newHand');
+      io.emit('newHand', gameState);
+
     }
   });
 
-  socket.on('action', function(action) {
-    console.log(table.game.pot);
+  socket.on('action', function(action, amount) {
 
     if (socket.playerIndex === table.currentPlayer) {
       if (action === 'Bet') {
-        table.players[table.currentPlayer].Bet();
+        table.players[table.currentPlayer].Bet(amount);
+        var getClientState = R.compose(R.assoc('currentPlayer', table.currentPlayer),
+                                       R.assoc('players',
+                                               R.map(
+                                                 R.pickAll(['playerName', 'chips']),
+                                                 table.players)),
+                                       R.dissoc('deck'),
+                                       R.clone);
+
+
+        console.log(table.currentPlayer);
+        console.log(table.currentPlayer);
+        console.log('emitting newHand BET');
+        var gameState = getClientState(table.game);
+        io.emit('newHand', gameState);
       } else if (action === 'Call') {
         table.players[table.currentPlayer].Call();
 
@@ -77,6 +90,19 @@ io.on('connection', function(socket){
 
   emitter.on('deal', function() {
     io.emit('deal', table.game.board);
+  });
+
+  emitter.on('newRound', function() {
+    table.players.forEach(function(player, i) {
+      if (players[i]) {
+        var s = players[i].socket;
+        s.emit('cards', player.cards);
+      }
+    });
+  });
+
+  emitter.on('gameOver', function() {
+    table.initNewRound();
   });
 });
 

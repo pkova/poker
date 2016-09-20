@@ -9,6 +9,7 @@ socket.emit('join', name);
 socket.on('newHand', function(state) {
   console.log('received newHand gameState: ', state);
   gameState = state;
+  document.querySelector('.pot > span').innerText = state.pot;
   if (gameState.currentPlayer === playerIndex) {
     myTurn = true;
   }
@@ -106,8 +107,9 @@ var clearScene = function() {
 var clickHandler = function(event) {
   console.log(event);
   var action = event.target.innerText;
+  var amount = parseInt(document.querySelector('.amount').value, 10);
   if (myTurn) {
-    socket.emit('action', action);
+    socket.emit('action', action, amount);
     myTurn = false;
   }
 };
