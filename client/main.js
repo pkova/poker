@@ -17,6 +17,7 @@ socket.on('newHand', function(state) {
 
   if (gameState.currentPlayer === playerIndex) {
     myTurn = true;
+    document.querySelector('.turn > span').innerText = 'TRUE';
   }
 });
 
@@ -116,6 +117,7 @@ var clickHandler = function(event) {
   if (myTurn) {
     socket.emit('action', action, amount);
     myTurn = false;
+    document.querySelector('.turn > span').innerText = 'FALSE';
   }
 };
 
