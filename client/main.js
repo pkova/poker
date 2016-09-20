@@ -1,3 +1,5 @@
+var socket = io('http://localhost:3001');
+
 var scene = new THREE.Scene();
 var raycaster = new THREE.Raycaster();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
