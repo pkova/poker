@@ -1,10 +1,25 @@
 var socket = io('http://localhost:3001');
 var name = 'pyry';
+var playerIndex;
+var gameState;
+var myTurn = false;
 
 socket.emit('join', name);
 
-socket.on('newHand', function(gameState) {
-  console.log('received newHand gameState: ', gameState);
+socket.on('newHand', function(state) {
+  console.log('received newHand gameState: ', state);
+  gameState = state;
+  if (gameState.currentPlayer === playerIndex) {
+    myTurn = true;
+  }
+});
+
+socket.on('playerIndex', function(index) {
+  playerIndex = index;
+});
+
+socket.on('cards', function(cards) {
+  dealStartingCards(cards[0], cards[1]);
 });
 
 var scene = new THREE.Scene();
@@ -76,6 +91,19 @@ var clearScene = function() {
     scene.remove(scene.children[i]);
   }
 };
+
+var clickHandler = function(event) {
+  console.log(event);
+  var action = event.target.innerText;
+  if (myTurn) {
+    socket.emit('action', action);
+    myTurn = false;
+  }
+};
+
+document.querySelector('.bet').addEventListener('click', clickHandler);
+document.querySelector('.call').addEventListener('click', clickHandler);
+document.querySelector('.fold').addEventListener('click', clickHandler);
 
 function render() {
   TWEEN.update();
