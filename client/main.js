@@ -1,4 +1,11 @@
 var socket = io('http://localhost:3001');
+var name = 'pyry';
+
+socket.emit('join', name);
+
+socket.on('newHand', function(gameState) {
+  console.log('received newHand gameState: ', gameState);
+});
 
 var scene = new THREE.Scene();
 var raycaster = new THREE.Raycaster();
@@ -22,10 +29,14 @@ var createCard = function(card) {
   return mesh;
 };
 
-var card1 = createCard("AH");
-var card2 = createCard("AD");
 
-var dealStartingCards = function() {
+var dealStartingCards = function(c1, c2) {
+
+  clearScene();
+
+  var card1 = createCard(c1);
+  var card2 = createCard(c2);
+
   var coords = { x: 1, y: 2 };
   var tween = new TWEEN.Tween(coords)
       .to({ x: -0.5, y: -3 }, 1100)
@@ -65,11 +76,6 @@ var clearScene = function() {
     scene.remove(scene.children[i]);
   }
 };
-
-dealStartingCards();
-dealFlop(['3C', '5C', '2H']);
-dealTurn('AS');
-dealRiver('8H');
 
 function render() {
   TWEEN.update();
