@@ -4,7 +4,7 @@ var io = require('socket.io')(http);
 var poker = require('./lib/node-poker');
 var R = require('ramda');
 
-var table = new poker.Table(50, 100, 2, 2, 100, 1000);
+var table = new poker.Table(5, 10, 2, 2, 100, 1000);
 
 var emitter = table.getEventEmitter();
 
@@ -103,31 +103,37 @@ io.on('connection', function(socket){
     }
   });
 
+
   socket.on('disconnect', function() {
     console.log('a user has disconnected');
-    console.log(players);
     players = players.filter(function(e) {
       return e.socket !== socket;
     });
-    console.log(players);
-    var table = new poker.Table(50, 100, 2, 2, 100, 1000);
+    var table = new poker.Table(5, 10, 2, 2, 100, 1000);
   });
 
-  emitter.on('deal', function() {
-    io.emit('deal', table.game.board);
-  });
-
-  emitter.on('newRound', function() {
-    table.players.forEach(function(player, i) {
-      if (players[i]) {
-        var s = players[i].socket;
-        s.emit('cards', player.cards);
-      }
-    });
-  });
 });
 
 http.listen(3001, function(){
   console.log('listening on *:3001');
 });
 
+emitter.on('deal', function() {
+  console.log('deal');
+  io.emit('deal', table.game.board);
+});
+
+emitter.on('newRound', function() {
+  console.log('newRound');
+  table.players.forEach(function(player, i) {
+    if (players[i]) {
+      var s = players[i].socket;
+      s.emit('cards', player.cards);
+    }
+  });
+});
+
+emitter.on('showdown', function() {
+  console.log('SHOWDOWN');
+  io.emit('showdown', table.gameWinners);
+});

@@ -40,6 +40,24 @@ socket.on('deal', function(board) {
   }
 });
 
+socket.on('showdown', function(winners) {
+  console.log('received winners data', winners);
+  var message;
+  if (winners.length > 1) {
+    message = 'Split pot! Both players win ' + winners[0].amount + ' chips with ' + winners[0].hand.message + '!';
+  } else {
+    message = winners[0].playerName + ' wins ' + winners[0].amount + ' chips with ' + winners[0].hand.message + '!';
+  }
+  document.querySelector('.winmessage').innerText = message;
+  document.querySelector('.winmessage').style.visibility = 'visible';
+
+  // Fade out element
+  var s = document.querySelector('.winmessage').style;
+  s.opacity = 1;
+  (function fade(){(s.opacity-=.1)<0?s.display="none":setTimeout(fade, 500)})();
+
+});
+
 var scene = new THREE.Scene();
 var raycaster = new THREE.Raycaster();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -111,7 +129,6 @@ var clearScene = function() {
 };
 
 var clickHandler = function(event) {
-  console.log(event);
   var action = event.target.innerText;
   var amount = parseInt(document.querySelector('.amount').value, 10);
   if (myTurn) {

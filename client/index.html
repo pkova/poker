@@ -22,6 +22,10 @@
      .controls {
        position: relative;
      }
+     .winmessage {
+       top: 1%;
+       left: 40%;
+     }
     </style>
   </head>
   <body>
@@ -42,6 +46,7 @@
     <div class="mybet">My bet: <span>0</span></div>
     <div class="hisbet">His bet: <span>0</span></div>
     <div class="turn">My turn: <span>FALSE</span></div>
+    <div class="winmessage absolute" style="visibility:hidden;">X wins X with X</div>
     <script src="https://simplewebrtc.com/latest-v2.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.22.1/ramda.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
