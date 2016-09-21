@@ -130,7 +130,7 @@ var dealStartingCards = function(c1, c2) {
 var dealFlop = function(cards) {
   cards.forEach(function(card, idx) {
     var currentCard = createCard(card);
-    var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).start();
+    var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).delay(idx * 400).start();
     currentCard.position.set(idx - 2, 0, 0);
   });
 };
