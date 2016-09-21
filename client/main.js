@@ -5,6 +5,8 @@ var gameState;
 var myTurn = false;
 var cardHover = false;
 
+var holeCards = [];
+
 socket.emit('join', name);
 
 socket.on('newHand', function(state) {
@@ -121,6 +123,8 @@ var dealStartingCards = function(c1, c2) {
     card2.position.set(coords2.x, coords2.y, 0);
     card2.rotation.set(card2.rotation.x, card2.rotation.y, card2.rotation.z + 0.1);
   });
+
+  holeCards = [card1, card2];
 };
 
 var dealFlop = function(cards) {
@@ -162,15 +166,15 @@ var hoverHandler = function(event) {
 
   raycaster.setFromCamera( mouse, camera );
 
-  var intersects = raycaster.intersectObjects(scene.children);
+  var intersects = raycaster.intersectObjects(holeCards);
 
   if (intersects.length > 0 && !cardHover) {
-    scene.children.forEach(function(obj) {
+    holeCards.forEach(function(obj) {
       obj.rotateX(Math.PI);
     });
     cardHover = true;
   } else if (intersects.length === 0 && cardHover) {
-    scene.children.forEach(function(obj) {
+    holeCards.forEach(function(obj) {
       obj.rotateX(Math.PI);
     });
     cardHover = false;
