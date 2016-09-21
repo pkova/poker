@@ -51,3 +51,5 @@ textures['JS'] = new THREE.TextureLoader().load('cards/jack_of_spades.png');
 textures['QS'] = new THREE.TextureLoader().load('cards/queen_of_spades.png');
 textures['KS'] = new THREE.TextureLoader().load('cards/king_of_spades.png');
 textures['AS'] = new THREE.TextureLoader().load('cards/ace_of_spades.png');
+textures['back'] = new THREE.TextureLoader().load('cards/KemBack.jpg');
+

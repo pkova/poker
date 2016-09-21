@@ -3,6 +3,7 @@ var name = 'pyry';
 var playerIndex;
 var gameState;
 var myTurn = false;
+var cardHover = false;
 
 socket.emit('join', name);
 
@@ -63,7 +64,6 @@ var raycaster = new THREE.Raycaster();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.set(0, 0, 5);
 
-
 var modifier = new THREE.BendModifier();
 
 var renderer = new THREE.WebGLRenderer({alpha: true});
@@ -71,11 +71,27 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
 
 var createCard = function(card) {
-  var geometry = new THREE.PlaneGeometry(1, 2, 10, 10);
-  var texture = textures[card];
-  var material = new THREE.MeshBasicMaterial({side: THREE.DoubleSide, map: texture});
-  var mesh = new THREE.Mesh(geometry, material);
-  mesh.rotation.set(2, Math.PI, 0);
+
+  var textureFront = textures[card];
+  var textureBack = textures['back'];
+  var materials = [new THREE.MeshBasicMaterial({map: textureFront, side: THREE.FrontSide}),
+                   new THREE.MeshBasicMaterial({map: textureBack, side: THREE.BackSide})];
+
+
+  var geometry = new THREE.PlaneGeometry(1, 2);
+
+  for (var i = 0, len = geometry.faces.length; i < len; i++) {
+    var face = geometry.faces[i].clone();
+    face.materialIndex = 1;
+    geometry.faces.push(face);
+    geometry.faceVertexUvs[0].push(geometry.faceVertexUvs[0][i].slice(0));
+  }
+
+  var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
+  mesh.rotation.set(2, 0, 0);
+
+  // DoubleSide needed for object picking to work on both sides
+  mesh.material.side = THREE.DoubleSide;
   scene.add(mesh);
   return mesh;
 };
@@ -138,13 +154,40 @@ var clickHandler = function(event) {
   }
 };
 
+var hoverHandler = function(event) {
+  event.preventDefault();
+  var mouse = new THREE.Vector2();
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+  raycaster.setFromCamera( mouse, camera );
+
+  var intersects = raycaster.intersectObjects(scene.children);
+
+  if (intersects.length > 0 && !cardHover) {
+    scene.children.forEach(function(obj) {
+      obj.rotateX(Math.PI);
+    });
+    cardHover = true;
+  } else if (intersects.length === 0 && cardHover) {
+    scene.children.forEach(function(obj) {
+      obj.rotateX(Math.PI);
+    });
+    cardHover = false;
+  }
+};
+
 document.querySelector('.bet').addEventListener('click', clickHandler);
 document.querySelector('.call').addEventListener('click', clickHandler);
 document.querySelector('.fold').addEventListener('click', clickHandler);
+document.querySelector('canvas').addEventListener('mousemove', hoverHandler);
 
 function render() {
   TWEEN.update();
   requestAnimationFrame(render);
   renderer.render(scene, camera);
+  scene.updateMatrixWorld();
 }
 render();
+
+dealStartingCards('AD', 'AH');
