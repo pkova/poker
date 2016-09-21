@@ -134,12 +134,12 @@ var dealVillainCards = function() {
   card1.scale.set(0.7, 0.7, 0.7);
   card2.scale.set(0.7, 0.7, 0.7);
 
-  // card1 slightly higher to not make them render through eachother
-  card1.position.set(3, 0.03, 0);
+  card1.position.set(3, 0, 0);
   card2.position.set(3, 0, 0);
 
   var tween = new TWEEN.Tween(card1.position)
-      .to({ x: 0, y: 0.2 }, 1100)
+  // card1 slightly higher on y-axis to avoid rendering through card2
+      .to({ x: 0, y: 0.21 }, 1100)
       .start();
 
   var tween2 = new TWEEN.Tween(card2.position)
