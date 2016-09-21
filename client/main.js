@@ -130,16 +130,21 @@ var dealStartingCards = function(c1, c2) {
 var dealFlop = function(cards) {
   cards.forEach(function(card, idx) {
     var currentCard = createCard(card);
+    var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).start();
     currentCard.position.set(idx - 2, 0, 0);
   });
 };
 
 var dealTurn = function(card) {
-  createCard(card).position.set(1, 0, 0);
+  var currentCard = createCard(card);
+  currentCard.position.set(1, 0, 0);
+  var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).start();
 };
 
 var dealRiver = function(card) {
-  createCard(card).position.set(2, 0, 0);
+  var currentCard = createCard(card);
+  currentCard.position.set(2, 0, 0);
+  var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).start();
 };
 
 var clearScene = function() {
@@ -193,5 +198,3 @@ function render() {
   scene.updateMatrixWorld();
 }
 render();
-
-dealStartingCards('AD', 'AH');
