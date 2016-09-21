@@ -90,7 +90,7 @@ var createCard = function(card) {
   }
 
   var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(materials));
-  mesh.rotation.set(2, 0, 0);
+  mesh.rotation.set(2, 0, Math.PI);
 
   // DoubleSide needed for object picking to work on both sides
   mesh.material.side = THREE.DoubleSide;
@@ -106,12 +106,12 @@ var dealStartingCards = function(c1, c2) {
   var card1 = createCard(c1);
   var card2 = createCard(c2);
 
-  var coords = { x: 1, y: 2 };
+  var coords = { x: 3, y: 0 };
   var tween = new TWEEN.Tween(coords)
       .to({ x: -0.5, y: -3 }, 1100)
       .start();
 
-  var coords2 = { x: 1, y: 2 };
+  var coords2 = { x: 3, y: 0 };
   var tween2 = new TWEEN.Tween(coords2)
     .to({ x: 0.5, y: -3 }, 1100)
     .start();
@@ -127,23 +127,49 @@ var dealStartingCards = function(c1, c2) {
   holeCards = [card1, card2];
 };
 
+var dealVillainCards = function() {
+  var card1 = createCard('back');
+  var card2 = createCard('back');
+
+  card1.scale.set(0.7, 0.7, 0.7);
+  card2.scale.set(0.7, 0.7, 0.7);
+
+  // card1 slightly higher to not make them render through eachother
+  card1.position.set(3, 0.03, 0);
+  card2.position.set(3, 0, 0);
+
+  var tween = new TWEEN.Tween(card1.position)
+      .to({ x: 0, y: 0.2 }, 1100)
+      .start();
+
+  var tween2 = new TWEEN.Tween(card2.position)
+      .to({ x: 0.5, y: 0.2}, 1100)
+    .start();
+
+  tween.onUpdate( function() {
+    card1.rotation.set(card1.rotation.x, card1.rotation.y, card1.rotation.z + 0.1);
+
+    card2.rotation.set(card2.rotation.x, card2.rotation.y, card2.rotation.z + 0.1);
+  });
+};
+
 var dealFlop = function(cards) {
   cards.forEach(function(card, idx) {
     var currentCard = createCard(card);
     var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).delay(idx * 400).start();
-    currentCard.position.set(idx - 2, 0, 0);
+    currentCard.position.set(idx - 2, -1, 0);
   });
 };
 
 var dealTurn = function(card) {
   var currentCard = createCard(card);
-  currentCard.position.set(1, 0, 0);
+  currentCard.position.set(1, -1, 0);
   var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).start();
 };
 
 var dealRiver = function(card) {
   var currentCard = createCard(card);
-  currentCard.position.set(2, 0, 0);
+  currentCard.position.set(2, -1, 0);
   var tween = new TWEEN.Tween(currentCard.rotation).to({x: currentCard.rotation.x, y: currentCard.rotation.y + Math.PI, z: currentCard.rotation.z}, 500).start();
 };
 
@@ -198,3 +224,7 @@ function render() {
   scene.updateMatrixWorld();
 }
 render();
+
+dealStartingCards('2C', '2D');
+dealFlop(['AD', 'AC', 'AH']);
+dealVillainCards();
