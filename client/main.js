@@ -224,7 +224,3 @@ function render() {
   scene.updateMatrixWorld();
 }
 render();
-
-dealStartingCards('2C', '2D');
-dealFlop(['AD', 'AC', 'AH']);
-dealVillainCards();
