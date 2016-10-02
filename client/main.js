@@ -31,6 +31,7 @@ socket.on('playerIndex', function(index) {
 socket.on('cards', function(cards) {
   clearScene();
   dealStartingCards(cards[0], cards[1]);
+  dealVillainCards();
 });
 
 socket.on('deal', function(board) {
