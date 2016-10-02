@@ -54,11 +54,11 @@ socket.on('showdown', function(winners) {
   }
   document.querySelector('.winmessage').innerText = message;
   document.querySelector('.winmessage').style.visibility = 'visible';
+  document.querySelector('.winmessage').style.opacity = 1;
 
   // Fade out element
   var s = document.querySelector('.winmessage').style;
-  s.opacity = 1;
-  (function fade(){(s.opacity-=.1)<0?s.display="none":setTimeout(fade, 500)})();
+  (function fade(){(s.opacity-=.1)<0?s.visibility='hidden':setTimeout(fade, 500)})();
 
 });
 
