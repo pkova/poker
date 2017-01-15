@@ -7,6 +7,7 @@ var cardHover = false;
 
 var holeCards = [];
 var roundMeshes = [];
+var potMeshes = [];
 
 socket.emit('join', name);
 
@@ -14,6 +15,10 @@ socket.on('newHand', function(state) {
   console.log('received newHand gameState: ', state);
   gameState = state;
   document.querySelector('.pot > span').innerText = state.pot;
+  potMeshes.forEach(function(mesh) {
+    scene.remove(mesh);
+  });
+  potChips(state.pot, -1);
   document.querySelector('.chips > span').innerText = state.players[playerIndex].chips;
   document.querySelector('.mybet > span').innerText = state.bets[playerIndex];
   var hisBet = state.bets.filter(function(e, i) {return i !== playerIndex;})[0];
@@ -81,6 +86,7 @@ var stackChips = function(count, mesh, xOffset) {
     chip.position.y = i * 0.02;
     chip.rotateX(-Math.PI/3);
     roundMeshes.push(chip);
+    potMeshes.push(chip);
     scene.add(chip);
   });
 };
