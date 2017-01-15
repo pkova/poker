@@ -90,6 +90,10 @@ loader.load('white_chip.dae', function(model) {
   whiteChip = model.scene;
 });
 
+loader.load('yellow_chip.dae', function(model) {
+  yellowChip = model.scene;
+});
+
 var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
