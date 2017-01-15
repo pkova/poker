@@ -70,6 +70,8 @@ camera.position.set(0, 0, 5);
 var modifier = new THREE.BendModifier();
 var loader = new THREE.ColladaLoader();
 
+var light = new THREE.AmbientLight( 0x404040, 3); // soft white light
+scene.add( light );
 
 loader.load('blue_chip.dae', function(model) {
   blueChip = model.scene;
