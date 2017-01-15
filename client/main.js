@@ -6,6 +6,7 @@ var myTurn = false;
 var cardHover = false;
 
 var holeCards = [];
+var roundMeshes = [];
 
 socket.emit('join', name);
 
@@ -91,10 +92,11 @@ document.querySelector('.game').appendChild(renderer.domElement);
 
 var stackChips = function(count) {
   R.range(0, count).forEach(function(n, i) {
-    chip = blueChip.clone();
+    var chip = blueChip.clone();
     chip.position.x = -1;
     chip.position.y = i * 0.2;
     chip.rotateX(-Math.PI/3);
+    roundMeshes.push(chip);
     scene.add(chip);
   });
 };
@@ -121,6 +123,7 @@ var createCard = function(card) {
 
   // DoubleSide needed for object picking to work on both sides
   mesh.material.side = THREE.DoubleSide;
+  roundMeshes.push(mesh);
   scene.add(mesh);
   return mesh;
 };
@@ -201,9 +204,9 @@ var dealRiver = function(card) {
 };
 
 var clearScene = function() {
-  for (var i = scene.children.length - 1; i >= 0; i--) {
-    scene.remove(scene.children[i]);
-  }
+  roundMeshes.forEach(function(mesh) {
+    scene.remove(mesh);
+  });
 };
 
 var clickHandler = function(event) {
