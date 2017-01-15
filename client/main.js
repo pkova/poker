@@ -77,6 +77,14 @@ loader.load('blue_chip.dae', function(model) {
   blueChip = model.scene;
 });
 
+loader.load('black_chip.dae', function(model) {
+  blackChip = model.scene;
+});
+
+loader.load('red_chip.dae', function(model) {
+  redChip = model.scene;
+});
+
 var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
