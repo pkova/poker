@@ -86,6 +86,10 @@ loader.load('red_chip.dae', function(model) {
   redChip = model.scene;
 });
 
+loader.load('white_chip.dae', function(model) {
+  whiteChip = model.scene;
+});
+
 var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
@@ -94,7 +98,7 @@ var stackChips = function(count) {
   R.range(0, count).forEach(function(n, i) {
     var chip = blueChip.clone();
     chip.position.x = -1;
-    chip.position.y = i * 0.2;
+    chip.position.y = i * 0.02;
     chip.rotateX(-Math.PI/3);
     roundMeshes.push(chip);
     scene.add(chip);
