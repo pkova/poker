@@ -89,6 +89,16 @@ var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
 
+var stackChips = function(count) {
+  R.range(0, count).forEach(function(n, i) {
+    chip = blueChip.clone();
+    chip.position.x = -1;
+    chip.position.y = i * 0.2;
+    chip.rotateX(-Math.PI/3);
+    scene.add(chip);
+  });
+};
+
 var createCard = function(card) {
 
   var textureFront = textures[card];
