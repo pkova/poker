@@ -69,36 +69,20 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 camera.position.set(0, 0, 5);
 
 var modifier = new THREE.BendModifier();
-var loader = new THREE.ColladaLoader();
-
-var light = new THREE.AmbientLight( 0x404040, 3); // soft white light
-scene.add( light );
-
-loader.load('blue_chip.dae', function(model) {
-  blueChip = model.scene;
-});
-
-loader.load('black_chip.dae', function(model) {
-  blackChip = model.scene;
-});
-
-loader.load('red_chip.dae', function(model) {
-  redChip = model.scene;
-});
-
-loader.load('white_chip.dae', function(model) {
-  whiteChip = model.scene;
-});
-
-loader.load('yellow_chip.dae', function(model) {
-  yellowChip = model.scene;
-});
 
 var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
 
 var stackChips = function(count) {
+  chipMap = [
+    {value: 100, mesh: window.blackChip},
+    {value: 25, mesh: window.yellowChip},
+    {value: 10, mesh: window.blueChip},
+    {value: 5, mesh: window.redChip},
+    {value: 1, mesh: window.whiteChip}
+  ];
+
   R.range(0, count).forEach(function(n, i) {
     var chip = blueChip.clone();
     chip.position.x = -1;
