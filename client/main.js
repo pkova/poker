@@ -74,24 +74,34 @@ var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
 
-var stackChips = function(count) {
-  chipMap = [
-    {value: 100, mesh: window.blackChip},
-    {value: 25, mesh: window.yellowChip},
-    {value: 10, mesh: window.blueChip},
-    {value: 5, mesh: window.redChip},
-    {value: 1, mesh: window.whiteChip}
-  ];
-
+var stackChips = function(count, mesh, xOffset) {
   R.range(0, count).forEach(function(n, i) {
-    var chip = blueChip.clone();
-    chip.position.x = -1;
+    var chip = mesh.clone();
+    chip.position.x = xOffset;
     chip.position.y = i * 0.02;
     chip.rotateX(-Math.PI/3);
     roundMeshes.push(chip);
     scene.add(chip);
   });
 };
+
+var potChips = function(potSize, xOffset) {
+  if (potSize > 0) {
+    var chipMap = [
+      {value: 100, mesh: window.blackChip},
+      {value: 25, mesh: window.yellowChip},
+      {value: 10, mesh: window.blueChip},
+      {value: 5, mesh: window.redChip},
+      {value: 1, mesh: window.whiteChip}
+    ];
+    var available = chipMap.filter(function(e) {return e.value <= potSize;});
+    var count = Math.floor(potSize / available[0].value);
+    stackChips(count, available[0].mesh, xOffset);
+    var remaining = potSize - count * available[0].value;
+    potChips(remaining, xOffset - 0.5);
+  }
+};
+
 
 var createCard = function(card) {
 
