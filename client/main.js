@@ -68,6 +68,12 @@ var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHe
 camera.position.set(0, 0, 5);
 
 var modifier = new THREE.BendModifier();
+var loader = new THREE.ColladaLoader();
+
+
+loader.load('blue_chip.dae', function(model) {
+  blueChip = model.scene;
+});
 
 var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -224,4 +230,5 @@ function render() {
   renderer.render(scene, camera);
   scene.updateMatrixWorld();
 }
+
 render();
