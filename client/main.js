@@ -1,4 +1,4 @@
-var socket = io();
+var socket = io('https://aqueous-plateau-89394.herokuapp.com/');
 var name = 'pyry';
 var playerIndex;
 var gameState = {roundName: "Deal"};
