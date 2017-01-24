@@ -20,18 +20,22 @@ socket.on('newHand', function(state) {
   });
   potMeshes = [];
 
-  if (gameState.roundName !== state.roundName) {
-    playerBetMeshes.forEach(function(mesh) {
-      scene.remove(mesh);
-    });
-    playerBetMeshes = [];
-  }
-
   potChips(state.pot, -1, 0);
+
+  playerBetMeshes.forEach(function(mesh) {
+    scene.remove(mesh);
+  });
+  playerBetMeshes = [];
+
   document.querySelector('.chips > span').innerText = state.players[playerIndex].chips;
   document.querySelector('.mybet > span').innerText = state.bets[playerIndex];
+
+  potChips(state.bets[playerIndex], -1, -2.5);
+
   var hisBet = state.bets.filter(function(e, i) {return i !== playerIndex;})[0];
   document.querySelector('.hisbet > span').innerText = hisBet;
+
+  potChips(hisBet, 1, -0.5);
 
   if (state.currentPlayer === playerIndex) {
     myTurn = true;
@@ -282,10 +286,6 @@ var clickHandler = function(event) {
   var action = event.target.innerText;
   var amount = parseInt(document.querySelector('.amount').value, 10);
   if (myTurn) {
-    console.log("ACTION IS", action);
-    if (action === "Bet" || action === "Call") {
-      potChips(amount, -1, -2.5);
-    }
     socket.emit('action', action, amount);
     myTurn = false;
     document.querySelector('.turn > span').innerText = 'FALSE';
