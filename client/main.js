@@ -97,6 +97,7 @@ socket.on('showdown', function(winners) {
 
   winnerCards = [winners[0].hand.holeCards[0], winners[0].hand.holeCards[1]];
 
+  // Split pot showdown animation still unhandled
   if (winners[0].playerName !== name) {
     showdownCard(winnerCards[0], -2);
     showdownCard(winnerCards[1], -3);
@@ -120,8 +121,8 @@ var stackChips = function(count, mesh, xOffset) {
   R.range(0, count).forEach(function(n, i) {
     var chip = mesh.clone();
     chip.position.x = xOffset;
-    chip.position.y = i * 0.02;
-    chip.rotateX(-Math.PI/3);
+    chip.translateZ(i * 0.02);
+    chip.rotateX(Math.PI/6);
     roundMeshes.push(chip);
     potMeshes.push(chip);
     scene.add(chip);
