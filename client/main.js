@@ -1,33 +1,43 @@
 var socket = io('http://localhost:3001');
 var name = 'pyry';
 var playerIndex;
-var gameState;
+var gameState = {roundName: "Deal"};
 var myTurn = false;
 var cardHover = false;
 
 var holeCards = [];
 var roundMeshes = [];
 var potMeshes = [];
+var playerBetMeshes = [];
 
 socket.emit('join', name);
 
 socket.on('newHand', function(state) {
   console.log('received newHand gameState: ', state);
-  gameState = state;
   document.querySelector('.pot > span').innerText = state.pot;
   potMeshes.forEach(function(mesh) {
     scene.remove(mesh);
   });
-  potChips(state.pot, -1);
+  potMeshes = [];
+
+  if (gameState.roundName !== state.roundName) {
+    playerBetMeshes.forEach(function(mesh) {
+      scene.remove(mesh);
+    });
+    playerBetMeshes = [];
+  }
+
+  potChips(state.pot, -1, 0);
   document.querySelector('.chips > span').innerText = state.players[playerIndex].chips;
   document.querySelector('.mybet > span').innerText = state.bets[playerIndex];
   var hisBet = state.bets.filter(function(e, i) {return i !== playerIndex;})[0];
   document.querySelector('.hisbet > span').innerText = hisBet;
 
-  if (gameState.currentPlayer === playerIndex) {
+  if (state.currentPlayer === playerIndex) {
     myTurn = true;
     document.querySelector('.turn > span').innerText = 'TRUE';
   }
+  gameState = state;
 });
 
 socket.on('playerIndex', function(index) {
@@ -117,19 +127,24 @@ var renderer = new THREE.WebGLRenderer({alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.querySelector('.game').appendChild(renderer.domElement);
 
-var stackChips = function(count, mesh, xOffset) {
+var stackChips = function(count, mesh, xOffset, yOffset) {
   R.range(0, count).forEach(function(n, i) {
     var chip = mesh.clone();
     chip.position.x = xOffset;
     chip.translateZ(i * 0.02);
     chip.rotateX(Math.PI/6);
-    roundMeshes.push(chip);
-    potMeshes.push(chip);
+    chip.translateY(yOffset);
+    if (yOffset === 0) {
+      roundMeshes.push(chip);
+      potMeshes.push(chip);
+    } else {
+      playerBetMeshes.push(chip);
+    }
     scene.add(chip);
   });
 };
 
-var potChips = function(potSize, xOffset) {
+var potChips = function(potSize, xOffset, yOffset) {
   if (potSize > 0) {
     var chipMap = [
       {value: 100, mesh: window.blackChip},
@@ -140,9 +155,9 @@ var potChips = function(potSize, xOffset) {
     ];
     var available = chipMap.filter(function(e) {return e.value <= potSize;});
     var count = Math.floor(potSize / available[0].value);
-    stackChips(count, available[0].mesh, xOffset);
+    stackChips(count, available[0].mesh, xOffset, yOffset);
     var remaining = potSize - count * available[0].value;
-    potChips(remaining, xOffset - 0.5);
+    potChips(remaining, xOffset - 0.5, yOffset);
   }
 };
 
@@ -260,12 +275,17 @@ var clearScene = function() {
   roundMeshes.forEach(function(mesh) {
     scene.remove(mesh);
   });
+  roundMeshes = [];
 };
 
 var clickHandler = function(event) {
   var action = event.target.innerText;
   var amount = parseInt(document.querySelector('.amount').value, 10);
   if (myTurn) {
+    console.log("ACTION IS", action);
+    if (action === "Bet" || action === "Call") {
+      potChips(amount, -1, -2.5);
+    }
     socket.emit('action', action, amount);
     myTurn = false;
     document.querySelector('.turn > span').innerText = 'FALSE';
