@@ -10,7 +10,8 @@ var roundMeshes = [];
 var potMeshes = [];
 var playerBetMeshes = [];
 
-socket.emit('join', name);
+document.querySelectorAll('div:not(.name)').forEach(function(e) {e.style.visibility = 'hidden'; });
+
 
 socket.on('newHand', function(state) {
   console.log('received newHand gameState: ', state);
@@ -319,6 +320,13 @@ document.querySelector('.bet').addEventListener('click', clickHandler);
 document.querySelector('.call').addEventListener('click', clickHandler);
 document.querySelector('.fold').addEventListener('click', clickHandler);
 document.querySelector('canvas').addEventListener('mousemove', hoverHandler);
+
+document.querySelector('button.name').addEventListener('click', function(e) {
+  name = document.querySelector('input.name').value;
+  socket.emit('join', name);
+  document.querySelectorAll('div:not(.winmessage)').forEach(function(e) {e.style.visibility = 'visible'; });
+  document.querySelectorAll('.name').forEach(function(e) {e.style.display = 'none'; });
+});
 
 function render() {
   TWEEN.update();

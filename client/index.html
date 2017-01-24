@@ -1,62 +1,66 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Poker</title>
-    <style>
-     .absolute {
-       position: absolute;
-     }
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Poker</title>
+        <style>
+         .absolute {
+             position: absolute;
+         }
 
-     #video {
-       left: 40%
-     }
-     video {
-       height: 20em;
-       width: 20em;
-     }
-     canvas {
-       z-index: 1;
-     }
-     .controls {
-       position: relative;
-     }
-     .winmessage {
-       top: 1%;
-       left: 40%;
-     }
-    </style>
-  </head>
-  <body>
-    <div class="app">
-      <div class="container">
-        <div id="video" class="absolute"></div>
-        <div class="game absolute"></div>
-      </div>
-      <div class="controls">
-        <input class="amount">
-        <button class="bet">Bet</button>
-        <button class="call">Call</button>
-        <button class="fold">Fold</button>
-      </div>
-    </div>
-    <div class="chips">My chips: <span>1000</span></div>
-    <div class="pot">Pot: <span>0</span></div>
-    <div class="mybet">My bet: <span>0</span></div>
-    <div class="hisbet">His bet: <span>0</span></div>
-    <div class="turn">My turn: <span>FALSE</span></div>
-    <div class="winmessage absolute" style="visibility:hidden;">X wins X with X</div>
-    <script src="https://simplewebrtc.com/latest-v2.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.22.1/ramda.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
-    <script src="ColladaLoader2.js"></script>
-    <script src="BendModifier.js"></script>
-    <script src="webrtc.js"></script>
-    <script src="textureLoader.js"></script>
-    <script src="main.js"></script>
-    <script src="chips.js"></script>
-  </body>
+         #video {
+             left: 40%
+         }
+         video {
+             height: 20em;
+             width: 20em;
+         }
+         canvas {
+             z-index: 1;
+         }
+         .controls {
+             position: relative;
+         }
+         .winmessage {
+             top: 1%;
+             left: 40%;
+         }
+        </style>
+    </head>
+    <body>
+        <div class="name">
+            <input class="name">
+            <button class="name">Name</button>
+        </div>
+        <div class="app">
+            <div class="container">
+                <div id="video" class="absolute"></div>
+                <div class="game absolute"></div>
+            </div>
+            <div class="controls">
+                <input class="amount">
+                <button class="bet">Bet</button>
+                <button class="call">Call</button>
+                <button class="fold">Fold</button>
+            </div>
+        </div>
+        <div class="chips">My chips: <span>1000</span></div>
+        <div class="pot">Pot: <span>0</span></div>
+        <div class="mybet">My bet: <span>0</span></div>
+        <div class="hisbet">His bet: <span>0</span></div>
+        <div class="turn">My turn: <span>FALSE</span></div>
+        <div class="winmessage absolute" style="visibility:hidden;">X wins X with X</div>
+        <script src="https://simplewebrtc.com/latest-v2.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.22.1/ramda.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+        <script src="ColladaLoader2.js"></script>
+        <script src="BendModifier.js"></script>
+        <script src="webrtc.js"></script>
+        <script src="textureLoader.js"></script>
+        <script src="main.js"></script>
+        <script src="chips.js"></script>
+    </body>
 </html>
