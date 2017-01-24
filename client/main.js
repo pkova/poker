@@ -50,6 +50,35 @@ socket.on('deal', function(board) {
   }
 });
 
+
+var showdownCard = function(c, x) {
+
+  var card = createCard(c);
+
+  var posCoords = { x: 3, y: 0, z: 0};
+  var posTween = new TWEEN.Tween(posCoords)
+      .to({ x: x, y: 1, z: -1.5 }, 1100)
+      .start();
+
+  posTween.onUpdate(function() {
+    card.position.set(posCoords.x, posCoords.y, posCoords.z);
+  });
+
+  var rotationCoords = {x: card.rotation.x, y: card.rotation.y, z: card.rotation.z};
+  var rotationTween = new TWEEN.Tween(rotationCoords)
+      .to({x: 0.04, y: 0.08, z: -3.14})
+      .start();
+
+  rotationTween.onUpdate(function() {
+    card.rotation.set(rotationCoords.x, rotationCoords.y, rotationCoords.z);
+  });
+
+  setTimeout(function() {
+    scene.remove(card);
+  }, 3000);
+
+};
+
 socket.on('showdown', function(winners) {
   console.log('received winners data', winners);
   var message;
@@ -67,27 +96,14 @@ socket.on('showdown', function(winners) {
   (function fade(){(s.opacity-=.1)<0?s.visibility='hidden':setTimeout(fade, 500);})();
 
   winnerCards = [winners[0].hand.holeCards[0], winners[0].hand.holeCards[1]];
-  var card1 = createCard(winnerCards[0]);
-  var card2 = createCard(winnerCards[1]);
 
-  var posCoords = { x: 3, y: 0, z: 0};
-  var posTween = new TWEEN.Tween(posCoords)
-      .to({ x: -2, y: 1, z: -1.5 }, 1100)
-      .start();
+  if (winners[0].playerName !== name) {
+    showdownCard(winnerCards[0], -2);
+    showdownCard(winnerCards[1], -3);
+  }
 
-  posTween.onUpdate(function() {
-    card1.position.set(posCoords.x, posCoords.y, posCoords.z);
-  });
-
-  var rotationCoords = {x: card1.rotation.x, y: card1.rotation.y, z: card1.rotation.z};
-  var rotationTween = new TWEEN.Tween(rotationCoords)
-      .to({x: 0.04, y: 0.08, z: -3.14})
-      .start();
-
-  rotationTween.onUpdate(function() {
-    card1.rotation.set(rotationCoords.x, rotationCoords.y, rotationCoords.z);
-  });
 });
+
 
 var scene = new THREE.Scene();
 var raycaster = new THREE.Raycaster();
