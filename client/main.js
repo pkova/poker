@@ -1,4 +1,4 @@
-var socket = io('http://localhost:3001');
+var socket = io();
 var name = 'pyry';
 var playerIndex;
 var gameState = {roundName: "Deal"};
