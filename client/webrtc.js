@@ -6,7 +6,7 @@ var webrtc = new SimpleWebRTC({
   remoteVideosEl: 'video',
   // immediately ask for camera access
   autoRequestMedia: true,
-  url: 'http://localhost:3000'
+  url: window.location.href
 });
 
 // we have to wait until it's ready
